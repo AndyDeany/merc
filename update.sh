@@ -1,4 +1,5 @@
-source venv/Scripts/activate
+source venv/bin/activate
 git checkout HEAD .
 git pull
 python -m pip install -r requirements.txt
+deactivate
