@@ -1,5 +1,5 @@
 import re
-from time import sleep
+from time import sleep, time
 
 import requests
 from bs4 import BeautifulSoup
@@ -37,6 +37,30 @@ class Listing:
     def is_valid(self):
         return self.is_merc_run and self.is_allowed_duty
 
+    @property
+    def updated_as_discord_timestamp(self):
+        updated_timestamp = int(time()) - self.seconds_passed_since_updated
+        return f"<t:{updated_timestamp}:R>"
+
+    TIME_PASSED_REGEX = re.compile(r"(\d+) (second|minute)s? ago")
+
+    @property
+    def seconds_passed_since_updated(self):
+        if self.updated == "now":
+            return 0
+
+        time_passed = self.TIME_PASSED_REGEX.match(self.updated)
+        value = int(time_passed[1])
+        unit = time_passed[2]
+
+        if unit == "second":
+            return value
+        if unit == "minute":
+            return 60*value
+
+        print(f"Couldn't parse time passed {self.updated}")
+        return 31_536_000   # Seconds in a year for errors
+
     def __eq__(self, other):
         return (self.duty == other.duty and
                 self.description == other.description and
@@ -44,7 +68,7 @@ class Listing:
 
     def __repr__(self):
         string = ""
-        string += f"**{self.duty} | {self.creator} | Updated: {self.updated}**\n"
+        string += f"**{self.duty} | {self.creator} | Updated {self.updated_as_discord_timestamp}"
         string += f"{self.description}\n"
         string += " ".join(str(slot) for slot in self.slots if not slot.is_filled)
         return string
