@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class Listing:
 
-    MERC_RUN_REGEX = re.compile(r"(^|[\d. \n])\d ?m($|i($|[^n])|[^a-zA-Z0-9])", re.IGNORECASE)
+    MERC_RUN_REGEX = re.compile(r"(^|[\d. \n])\d ?m($|i($|[^ns])|[^a-zA-Z0-9])", re.IGNORECASE)
     ALLOWED_DUTIES = (
         "Recollection (Extreme)",
         "AAC Cruiserweight M1 (Savage)",
