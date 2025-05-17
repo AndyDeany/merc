@@ -68,7 +68,7 @@ class Listing:
 
     def __repr__(self):
         string = ""
-        string += f"**{self.duty} | {self.creator} | Updated {self.updated_as_discord_timestamp}"
+        string += f"**{self.duty} | {self.creator} | Updated {self.updated_as_discord_timestamp}**\n"
         string += f"{self.description}\n"
         string += " ".join(str(slot) for slot in self.slots if not slot.is_filled)
         return string
